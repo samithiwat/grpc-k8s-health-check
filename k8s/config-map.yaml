@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: health-check-config
+  namespace: dev
+data:
+  config.yaml: |
+    app:
+      port: 3000
+      debug: false

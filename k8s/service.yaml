@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-check-test
+  namespace: dev
+spec:
+  selector:
+    app: health-check-test
+  clusterIP: None
+  ports:
+    - port: 3000

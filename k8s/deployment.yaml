@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-check-test
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: health-check-test
+  template:
+    metadata:
+      labels:
+        app: health-check-test
+    spec:
+      volumes:
+        - name: health-check-config
+          configMap:
+            name: health-check-config
+      containers:
+        - name: health-check-test
+          image: ghcr.io/samithiwat/grpc-k8s-health-check:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: health-check-config
+              mountPath: /app/config
+              readOnly: true
+          livenessProbe:
+            exec:
+              command: ["./grpc_health_probe", "-addr", "localhost:3000"]
+            initialDelaySeconds: 15
+          readinessProbe:
+            exec:
+              command: ["./grpc_health_probe", "-addr", "localhost:3000"]
+            initialDelaySeconds: 15
+          resources:
+            requests:
+              cpu: 5m
+              memory: 5Mi
+            limits:
+              cpu: 250m
+              memory: 300Mi
