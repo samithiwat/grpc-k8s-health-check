@@ -1,0 +1,10 @@
+app:
+  port: 3000
+  debug: true
+
+service:
+  backend: localhost:3001
+  auth: localhost:3002
+
+guard:
+  phase: "register"
